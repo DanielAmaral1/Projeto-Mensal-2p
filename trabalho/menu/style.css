@@ -1,0 +1,157 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body{
+    background-image: url('../imagens/BANNER\ JOGOS.png');
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat;
+}
+
+.topnav {
+    display: flex; /* Usar flexbox */
+    justify-content: space-between; /* Distribui o espaço entre os itens */
+    align-items: center; /* Alinha verticalmente os itens */
+    background-color: #333;
+    padding: 0 16px; /* Espaçamento interno */
+}
+
+.topnav a {
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.topnav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+.topnav a.active {
+    background-color: #aa0494;
+    color: white;
+}
+
+.topnav input[type=text] {
+    color: #000000;
+    margin: 0 auto; /* Centraliza horizontalmente */
+    padding: 6px;
+    border: 1px solid #ccc; /* Adiciona borda para visualização */
+    font-size: 17px;
+    flex: 1; /* Faz com que o input ocupe o espaço disponível */
+    max-width: 400px; /* Define uma largura máxima */
+    border-radius: 30px;
+}
+
+@media screen and (max-width: 600px) {
+    .topnav {
+        flex-direction: column; /* Empilha os itens verticalmente em telas pequenas */
+        align-items: flex-start; /* Alinha os itens à esquerda */
+    }
+    
+    .topnav a, .topnav input[type=text] {
+        width: 100%; /* Ocupa 100% da largura */
+        margin: 0; /* Remove margens */
+        padding: 14px;
+    }
+}
+
+/* Reset básico para remover margens e padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+}
+
+h1 {
+    font-size: 2.5em;
+}
+
+.catalogo {
+    display: grid; /* Muda para grid layout */
+    grid-template-columns: repeat(4, 1fr); /* 4 colunas de largura igual */
+    gap: 20px; /* Espaçamento entre os jogos */
+    margin: 20px;
+}
+
+.jogo {
+    background-color: w;
+    backdrop-filter: blur(15px);
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s; /* Transição suave ao passar o mouse */
+}
+
+.jogo img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.jogo h2 {
+    font-size: 1.5em;
+    margin: 10px 0;
+    color: white;
+}
+
+.jogo p {
+    font-size: 1em;
+    color: #ffffff;
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    margin-top: 20px;
+}
+
+
+.jogo {
+    display: block; /* Faz com que a div do jogo se comporte como um link */
+    text-decoration: none; /* Remove o sublinhado do link */
+    color: inherit; /* Mantém a cor do texto */
+}
+
+.jogo:hover {
+    transform: scale(1.05); /* Efeito de zoom ao passar o mouse */
+}
+
+@media (max-width: 768px) {
+    .catalogo {
+        grid-template-columns: repeat(2, 1fr); /* 2 colunas em telas menores */
+    }
+}
+
+@media (max-width: 480px) {
+    .catalogo {
+        grid-template-columns: 1fr; /* 1 coluna em telas muito pequenas */
+    }
+}
+
