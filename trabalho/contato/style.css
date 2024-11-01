@@ -45,8 +45,8 @@ body {
 .contatos {
     display: flex;
     gap: 1em;
+    margin-left: 28%;
 }
-
 .icone-contato {
     width: 40px;
     height: 40px;
@@ -57,12 +57,21 @@ body {
     transform: scale(1.1);
 }
 
+.logoSite{
+    width: 400px;
+    height:auto;
+   padding-top: 10px;
+   margin-right: 543px;
+}
+
 .topnav {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end; 
+    display: flex; /* Usar flexbox */
+    justify-content: flex-end; /* Alinha os itens à direita */
+    align-items: center; /* Alinha verticalmente os itens */
     background-color: #333;
-    padding: 0 16px;
+    padding: 0 16px; /* Espaçamento interno */
+    flex-wrap: nowrap; /* Evita que os itens empilhem */
+    max-width: 100%; /* Garante que a barra ocupe toda a largura */
 }
 
 .topnav a {
@@ -84,26 +93,34 @@ body {
 }
 
 .topnav input[type=text] {
-    color: #fff;
-    margin: 0 auto;
+    color: #000000;
+    margin: 0 auto; /* Centraliza horizontalmente */
     padding: 6px;
-    border: 1px solid #ccc;
+    border: 1px solid #ccc; /* Adiciona borda para visualização */
     font-size: 17px;
-    flex: 1;
-    max-width: 400px;
+    flex: 1; /* Faz com que o input ocupe o espaço disponível */
+    max-width: 400px; /* Define uma largura máxima */
+    border-radius: 30px;
 }
 
 @media screen and (max-width: 600px) {
     .topnav {
-        flex-direction: column;
-        align-items: flex-start;
+        flex-direction: column; /* Empilha os itens verticalmente em telas pequenas */
+        align-items: flex-start; /* Alinha os itens à esquerda */
     }
     
     .topnav a, .topnav input[type=text] {
-        width: 100%;
-        margin: 0;
+        width: 100%; /* Ocupa 100% da largura */
+        margin: 0; /* Remove margens */
         padding: 14px;
     }
+}
+
+/* Reset básico para remover margens e padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 .imagem{
