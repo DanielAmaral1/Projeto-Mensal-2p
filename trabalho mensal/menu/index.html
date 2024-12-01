@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>TaskBoard</title>
+</head>
+<body>
+    <header>
+        <h1>TaskBoard</h1>
+        <div>
+            <span>emanuel@mail.com</span>
+            <button class="theme-toggle">Dark</button>
+        </div>
+    </header>
+
+    <div class="container" id="boardContainer">
+        <div class="board" data-index="0">
+            <h3>Feito</h3>
+            <button class="delete-column" onclick="deleteColumn(this)">×</button>
+            <button onclick="addTask(this)">Nova tarefa</button>
+        </div>
+
+        <div class="board" data-index="1">
+            <h3>Revisão</h3>
+            <button class="delete-column" onclick="deleteColumn(this)">×</button>
+            <button onclick="addTask(this)">Nova tarefa</button>
+        </div>
+
+        <div class="board" data-index="2">
+            <h3>Em progresso</h3>
+            <button class="delete-column" onclick="deleteColumn(this)">×</button>
+            <button onclick="addTask(this)">Nova tarefa</button>
+        </div>
+
+        <div class="board" data-index="3">
+            <h3>A fazer</h3>
+            <button class="delete-column" onclick="deleteColumn(this)">×</button>
+            <button onclick="addTask(this)">Nova tarefa</button>
+        </div>
+    </div>
+
+    <button class="add-column" onclick="addColumn()">Nova Coluna</button>
+
+    <script src="script.js"></script>
+</body>
+</html>

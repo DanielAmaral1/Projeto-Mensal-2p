@@ -1,0 +1,93 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    transition: background-color 0.3s, color 0.3s;
+    background-color: #93bfee;
+}
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+}
+.container {
+    display: flex;
+    justify-content: center;
+    margin-right: 10%;
+    gap: 20px;
+    padding: 20px;
+    flex-wrap: wrap;
+}
+.board {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f4f4f4;
+    padding: 15px;
+    width: 200px;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+.board h3 {
+    text-align: center;
+    margin-bottom: 10px;
+    position: relative;
+}
+.delete-column {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    padding: 5px 8px;
+    cursor: pointer;
+    font-size: 12px;
+}
+.task {
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 3px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.task-content {
+    flex-grow: 1;
+    cursor: pointer;
+}
+.task-actions {
+    display: flex;
+    gap: 5px;
+}
+button {
+    cursor: pointer;
+}
+.add-column {
+    background-color: #f5f5f5;
+    color: rgb(0, 0, 0);
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+.dark-theme {
+    background-color: #222;
+    color: white;
+}
+.dark-theme .board {
+    background-color: #444;
+    border-color: #666;
+}
+.dark-theme .task {
+    background-color: #555;
+    border-color: #888;
+}
