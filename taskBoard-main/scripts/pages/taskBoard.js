@@ -254,3 +254,93 @@ function init() {
 
 init();
 
+
+document.addEventListener("DOMContentLoaded", () => {
+    const themeToggleButton = document.getElementById("themeToggleButton");
+    const body = document.body;
+
+    // Verifica o tema atual salvo no armazenamento local ou define o padrão
+    const currentTheme = localStorage.getItem("theme") || "light-theme";
+    body.classList.add(currentTheme);
+
+    // Atualiza o ícone do botão com base no tema atual
+    themeToggleButton.textContent = currentTheme === "dark-theme" ? "☀️" : "🌙";
+
+    // Alterna entre os temas claro e escuro
+    themeToggleButton.addEventListener("click", () => {
+        const isDarkTheme = body.classList.contains("dark-theme");
+
+        // Alterna o tema
+        body.classList.toggle("dark-theme", !isDarkTheme);
+        body.classList.toggle("light-theme", isDarkTheme);
+
+        // Salva o tema no armazenamento local
+        localStorage.setItem("theme", isDarkTheme ? "light-theme" : "dark-theme");
+
+        // Atualiza o ícone do botão
+        themeToggleButton.textContent = isDarkTheme ? "🌙" : "☀️";
+    });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    const themeToggleButton = document.getElementById("themeToggleButton");
+    const body = document.body;
+
+    // Verifica o tema atual, que pode vir da API ou do armazenamento local
+    let currentTheme = localStorage.getItem("theme") || "light-theme";
+
+    // Se o tema não estiver salvo, tenta carregar da API
+    fetch(`https://seuapp.outsystems.com/api/userpreferences/${getUserId()}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.theme) {
+                currentTheme = data.theme;
+            }
+            applyTheme(currentTheme);
+        })
+        .catch(error => console.error("Erro ao carregar tema:", error));
+
+    // Aplica o tema no body
+    function applyTheme(theme) {
+        body.classList.add(theme);
+        themeToggleButton.textContent = theme === "dark-theme" ? "☀️" : "🌙";
+    }
+
+    // Alterna entre os temas claro e escuro e salva a preferência
+    themeToggleButton.addEventListener("click", () => {
+        const isDarkTheme = body.classList.contains("dark-theme");
+
+        // Alterna o tema
+        body.classList.toggle("dark-theme", !isDarkTheme);
+        body.classList.toggle("light-theme", isDarkTheme);
+
+        // Atualiza o ícone do botão
+        themeToggleButton.textContent = isDarkTheme ? "🌙" : "☀️";
+
+        // Salva a preferência de tema no localStorage
+        localStorage.setItem("theme", isDarkTheme ? "light-theme" : "dark-theme");
+
+        // Salva o tema na API
+        const themeToSave = isDarkTheme ? "light" : "dark";
+        saveThemeToAPI(themeToSave);
+    });
+
+    // Função para salvar a preferência de tema no Outsystems
+    function saveThemeToAPI(theme) {
+        const userId = getUserId(); // Função para pegar o ID do usuário (seja do localStorage ou da sessão)
+        fetch("https://seuapp.outsystems.com/api/userpreferences", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                UserId: userId,
+                Theme: theme
+            })
+        })
+            .then(response => response.json())
+            .then(data => console.log("Tema salvo com sucesso:", data))
+            .catch(error => console.error("Erro ao salvar tema:", error));
+    }
+});
+
