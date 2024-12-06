@@ -1,48 +1,45 @@
 .navbar-custom {
-    background-color: purple;
+  background-color: purple;
 }
 
 .navbar-custom .navbar-brand,
 .navbar-custom .nav-link {
-    color: #fff;
+  color: #fff;
 }
 
 .dropdown-scroll {
-  max-height: 50vh; 
+  max-height: 50vh;
   overflow-y: auto;
 }
 
 .container {
-  /* display: flex; */
-  /* width: 1000px; */
   height: 90vh;
-} 
+}
 
 #board {
   display: flex;
   height: 90vh;
-  /* align-items: left; */
-  /* max-width: 200%; */
   overflow-x: scroll;
 }
 
 .column-item {
-  float: left;
-  margin: 10px;
-  padding: 10px;
-  border-radius: 10px;
-  flex: 1;  
-  width: 500px;
-  background-color: purple;  
-}
-
-.column-item {
+  position: relative;  /* Importante para o z-index funcionar corretamente */
   border: 1px solid #ccc;
   border-radius: 8px;
-  background-color: #f9f9f9;
+  background-color: #f9f9f9;  /* Cor da coluna */
   margin: 10px;
   padding: 0;
   width: 300px;
+}
+
+/* Estilo das tarefas */
+.task-item {
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: transparent;  /* Tarefa sem fundo branco */
+  border-radius: 5px;
+  z-index: 1;  /* Garante que a tarefa fique acima da coluna */
 }
 
 .column-header {
@@ -57,16 +54,104 @@
 .column-body {
   padding: 10px;
   min-height: 100px;
-  background-color: #fff;
+  background-color: transparent;  /* Coluna sem fundo branco */
 }
 
-.task-item {
-  border: 1px solid #ddd;
-  margin-bottom: 10px;
-  padding: 10px;
-  background-color: #e9ecef;
-  border-radius: 5px;
+#themeToggleButton {
+  margin-left: 830px;
 }
- .novac{
-  border-radius: 15px;
- }
+
+/* Estilo para o tema claro (padrão) */
+#board.light-theme {
+  background-color: #ffffff;
+  color: #000000;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.light-theme {
+  background-color: #f8f9fa;
+  color: #212529;
+}
+
+body.light-theme .navbar-custom {
+  background-color: #ffffff;
+  color: #212529;
+}
+
+body.light-theme .navbar-custom .navbar-brand,
+body.light-theme .navbar-custom .nav-link {
+  color: #212529;
+}
+
+body.light-theme .column-item {
+  background-color: #f9f9f9;  /* Cor da coluna no tema claro */
+}
+
+body.light-theme .column-header {
+  background-color: #007bff;
+  color: white;
+}
+
+body.light-theme .task-item {
+  background-color: #e9ecef;  /* Cor de fundo das tarefas no tema claro */
+}
+
+/* Estilo para o tema escuro */
+body.dark-theme {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+body.dark-theme .navbar-custom {
+  background-color: #333333;
+}
+
+body.dark-theme .navbar-custom .navbar-brand,
+body.dark-theme .navbar-custom .nav-link {
+  color: #ffffff;
+}
+
+body.dark-theme .column-item {
+  background-color: #1e1e1e;  /* Cor de fundo da coluna no tema escuro */
+  color: #ffffff;
+}
+
+body.dark-theme .column-header {
+  background-color: #444444;
+  color: white;
+}
+
+body.dark-theme .task-item {
+  background-color: #2a2a2a;  /* Cor de fundo das tarefas no tema escuro */
+  color: #ffffff;  /* Cor do texto das tarefas no tema escuro */
+}
+
+/* Letras do cabeçalho no tema claro */
+body.light-theme .navbar-custom {
+  background-color: #ffffff;
+  color: #212529;
+}
+
+body.light-theme .navbar-custom .navbar-brand,
+body.light-theme .navbar-custom .nav-link,
+body.light-theme .navbar-custom #themeToggleButton,
+body.light-theme .navbar-custom #logoutButton,
+body.light-theme .navbar-custom #userName {
+  color: #212529; /* Preto */
+  border-color: #212529; /* Para os botões */
+}
+
+/* Estilo para o texto do nome de usuário */
+#userName {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+body.light-theme #userName {
+  color: #212529;  /* Preto para tema claro */
+}
+
+body.dark-theme #userName {
+  color: #ffffff;  /* Branco para tema escuro */
+}
