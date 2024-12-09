@@ -155,3 +155,28 @@ body.light-theme #userName {
 body.dark-theme #userName {
   color: #ffffff;  /* Branco para tema escuro */
 }
+
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.task-actions button {
+  margin-left: 5px;
+  padding: 5px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.task-actions .edit-button {
+  color: #007bff; /* Azul para editar */
+  background: none;
+  border: none;
+}
+
+.task-actions .delete-button {
+  color: #dc3545; /* Vermelho para excluir */
+  background: none;
+  border: none;
+}
