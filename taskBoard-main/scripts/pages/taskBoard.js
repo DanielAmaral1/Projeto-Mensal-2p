@@ -48,11 +48,9 @@ async function loadBoard(id) {
 }
 
 function populateColumns(columns) {
-
-    boardLayout.innerHTML = ""; 
+    boardLayout.innerHTML = ""; // Limpa as colunas existentes
 
     columns.forEach((column) => {
-
         const columnItem = document.createElement("article");
         columnItem.className = "column-item";
 
@@ -60,44 +58,52 @@ function populateColumns(columns) {
         columnHeader.className = "column-header";
         columnHeader.innerHTML = `<h5>${column.Name}</h5>`;
 
-        // Criando o botão ao lado do título
+        // Botão de adicionar tarefa
         const columnButton = document.createElement("button");
         columnButton.className = "column-button";
-        columnButton.textContent = "Add Task"; // Texto do botão
+        columnButton.textContent = "Adicionar Tarefa"; // Texto do botão
         columnButton.addEventListener("click", () => {
             console.log(`Botão clicado na coluna: ${column.Name}`);
-            // Adicione aqui a funcionalidade do botão
             const titulo = prompt("Digite a Tarefa");
             const descricao = prompt("Digite a Descrição");
 
             if (titulo) {
                 criarTarefa(column.Id, titulo, descricao); // Agora cria e salva a tarefa na API
-            }else {
+            } else {
                 alert("Título e Coluna são obrigatórios!");
             }
         });
 
-        // Adiciona o botão ao header
+        // Botão de excluir coluna
+        const deleteButton = document.createElement("button");
+        deleteButton.className = "column-button";
+        deleteButton.textContent = "Excluir Coluna"; // Texto do botão
+        deleteButton.addEventListener("click", () => {
+            if (confirm(`Você tem certeza que deseja excluir a coluna "${column.Name}"?`)) {
+                excluirColuna(column.Id);
+            }
+        });
+
+        // Adiciona os botões no header da coluna
         columnHeader.appendChild(columnButton);
+        columnHeader.appendChild(deleteButton);
 
         const columnBody = document.createElement("div");
         columnBody.className = "column-body";
         columnBody.id = `tasks-${column.Id}`;
 
-
         columnItem.appendChild(columnHeader);
         columnItem.appendChild(columnBody);
 
-
         boardLayout.appendChild(columnItem);
 
-        fetchTasksByColumn(column.Id).then((res)=>{
-            addTasksToColumn(column.Id, res)
+        // Carregar as tarefas dessa coluna
+        fetchTasksByColumn(column.Id).then((res) => {
+            addTasksToColumn(column.Id, res);
         });
-
-
     });
 }
+
 
 function fetchTasksByColumn(columnId) {
     const endpoint = `${API_BASE_URL}/TasksByColumnId?ColumnId=${columnId}`;
@@ -128,7 +134,6 @@ function addTasksToColumn(columnId, tasks) {
     });
 }
 
-// Função para buscar a lista de boards e criar uma coluna com base no nome
 async function createColumnFromBoard() {
     try {
         // Captura o nome da board do HTML
@@ -165,7 +170,7 @@ async function createColumnFromBoard() {
 
         console.log("Board encontrado:", board);
 
-        const nome_coluna = prompt("Digite o Nome da coluna")
+        const nome_coluna = prompt("Digite o Nome da coluna");
 
         // Usa o ID da board para criar uma nova coluna
         const newColumnResponse = await fetch(`${API_BASE_URL}/Column`, {
@@ -187,19 +192,44 @@ async function createColumnFromBoard() {
         console.log("Coluna criada com sucesso:", newColumn);
 
         // Atualiza o DOM com a nova coluna
-        const boardsList = document.getElementById("boardsList");
-        if (boardsList) {
-            const listItem = document.createElement("li");
-            listItem.innerHTML = `<a class="dropdown-item">${newColumn.name}</a>`;
-            boardsList.appendChild(listItem);
-        }
+        populateColumns([newColumn]); // Atualiza a lista de colunas
     } catch (error) {
         console.error("Erro:", error);
     }
 }
 
-// Adiciona o evento ao botão
+// Adiciona o evento ao botão para criar coluna
 document.getElementById("createColumnButton").addEventListener("click", createColumnFromBoard);
+
+
+
+async function excluirColuna(colunaId) {
+    try {
+        // Substituindo a URL pela URL fornecida para excluir a coluna
+        const response = await fetch(`https://personal-ga2xwx9j.outsystemscloud.com/TaskBoard_CS/rest/TaskBoard/Column?ColumnId=${colunaId}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Erro ao excluir coluna: ${response.status}`);
+        }
+
+        console.log(`Coluna com ID ${colunaId} excluída com sucesso`);
+
+        // Atualiza a interface removendo a coluna
+        const columnElement = document.getElementById(`tasks-${colunaId}`);
+        if (columnElement) {
+            columnElement.parentElement.remove(); // Remove o item da coluna
+        }
+    } catch (error) {
+        console.error("Erro ao excluir coluna:", error);
+    }
+}
+
+
 
 
 
@@ -245,6 +275,96 @@ async function criarTarefa(colunaId, titulo, descricao) {
         console.error("Erro ao criar tarefa:", error);
     }
 }
+
+async function criarColuna(boardId, nomeColuna) {
+    try {
+        const response = await fetch('https://personal-ga2xwx9j.outsystemscloud.com/TaskBoard_CS/rest/TaskBoard/Column', {
+            method: 'PUT', // Usando PUT para adicionar uma nova coluna
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                BoardId: boardId, // ID do Board
+                Name: nomeColuna, // Nome da nova coluna
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error('Erro ao criar coluna');
+        }
+
+        const novaColuna = await response.json();
+        console.log('Coluna criada com sucesso:', novaColuna);
+
+        // Atualiza o DOM com a nova coluna
+        addNewColumnToBoard(novaColuna);  // Função para adicionar a coluna na interface
+    } catch (error) {
+        console.error('Erro ao criar coluna:', error);
+    }
+}
+
+function addNewColumnToBoard(novaColuna) {
+    const columnItem = document.createElement("article");
+    columnItem.className = "column-item";
+
+    const columnHeader = document.createElement("header");
+    columnHeader.className = "column-header";
+    columnHeader.innerHTML = `<h5>${novaColuna.Name}</h5>`;
+
+    // Botão para adicionar tarefa na nova coluna
+    const columnButton = document.createElement("button");
+    columnButton.className = "column-button";
+    columnButton.textContent = "Adicionar Tarefa"; // Texto do botão
+    columnButton.addEventListener("click", () => {
+        console.log(`Botão clicado na coluna: ${novaColuna.Name}`);
+        const titulo = prompt("Digite a Tarefa");
+        const descricao = prompt("Digite a Descrição");
+
+        if (titulo) {
+            criarTarefa(novaColuna.Id, titulo, descricao); // Cria a tarefa na nova coluna
+        } else {
+            alert("Título e Descrição são obrigatórios!");
+        }
+    });
+
+    // Adiciona o botão de adicionar tarefa ao header da coluna
+    columnHeader.appendChild(columnButton);
+
+    const columnBody = document.createElement("div");
+    columnBody.className = "column-body";
+    columnBody.id = `tasks-${novaColuna.Id}`;
+
+    columnItem.appendChild(columnHeader);
+    columnItem.appendChild(columnBody);
+
+    boardLayout.appendChild(columnItem);
+
+    // Após adicionar a coluna, pode-se carregar as tarefas dessa coluna (se houver)
+    fetchTasksByColumn(novaColuna.Id).then((tasks) => {
+        addTasksToColumn(novaColuna.Id, tasks);
+    });
+}
+
+// Adiciona evento ao botão para criar nova coluna
+document.getElementById("createColumnButton").addEventListener("click", () => {
+    const nomeColuna = prompt("Digite o nome da nova coluna");
+
+    if (nomeColuna) {
+        const boardId = getBoardId(); // Função para obter o ID do board selecionado
+        criarColuna(boardId, nomeColuna);  // Cria a nova coluna
+    } else {
+        alert("O nome da coluna não pode estar vazio!");
+    }
+});
+
+function getBoardId() {
+    const boardTitle = document.getElementById("boardTitle");
+    // Recupera o boardId de acordo com o nome do board ou do estado da aplicação
+    return boardTitle ? boardTitle.getAttribute("data-board-id") : null;
+}
+
+
+
 
 
 function init() {
