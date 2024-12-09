@@ -180,3 +180,37 @@ body.dark-theme #userName {
   background: none;
   border: none;
 }
+
+.task-item {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  background-color: #f9f9f9;
+  position: relative;
+}
+
+.task-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.edit-button {
+  right: 30px;
+  color: #4CAF50; /* Verde */
+}
+
+.delete-button {
+  color: #E53935; /* Vermelho */
+}
+
+.task-button:hover {
+  transform: scale(1.2);
+}

@@ -126,13 +126,101 @@ function addTasksToColumn(columnId, tasks) {
     tasks.forEach((task) => {
         const taskItem = document.createElement("div");
         taskItem.className = "task-item";
+        taskItem.id = `task-${task.Id}`; // Adiciona o ID da tarefa ao elemento
+
         taskItem.innerHTML = `
             <h6>${task.Title || "Sem título"}</h6>
             <p>${task.Description || "Sem descrição"}</p>
         `;
+
+        // Botão de editar tarefa
+        const editButton = document.createElement("button");
+        editButton.className = "task-button edit-button";
+        editButton.textContent = "✏️"; // Ícone de lápis para edição
+        editButton.addEventListener("click", () => editTask(task.Id, columnId));
+
+        // Botão de excluir tarefa
+        const deleteButton = document.createElement("button");
+        deleteButton.className = "task-button delete-button";
+        deleteButton.textContent = "🗑️"; // Ícone de lixeira para exclusão
+        deleteButton.addEventListener("click", () => deleteTask(task.Id, columnId));
+
+        // Adiciona os botões ao item da tarefa
+        taskItem.appendChild(editButton);
+        taskItem.appendChild(deleteButton);
+
         columnBody.appendChild(taskItem);
     });
 }
+
+async function editTask(taskId, columnId) {
+    try {
+        // Obtem os novos dados do usuário
+        const novoTitulo = prompt("Digite o novo título da tarefa:");
+        const novaDescricao = prompt("Digite a nova descrição da tarefa:");
+
+        if (!novoTitulo) {
+            alert("O título da tarefa não pode estar vazio!");
+            return;
+        }
+
+        const response = await fetch(`${API_BASE_URL}/Task`, {
+            method: "PUT", // Usamos PUT para atualizar a tarefa
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                Id: taskId, // ID da tarefa a ser editada
+                Title: novoTitulo,
+                Description: novaDescricao
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error("Erro ao editar a tarefa");
+        }
+
+        // Atualiza o DOM com os novos dados
+        const taskElement = document.getElementById(`task-${taskId}`);
+        if (taskElement) {
+            taskElement.querySelector("h6").textContent = novoTitulo || "Sem título";
+            taskElement.querySelector("p").textContent = novaDescricao || "Sem descrição";
+        }
+
+        console.log("Tarefa editada com sucesso:", taskId);
+    } catch (error) {
+        console.error("Erro ao editar a tarefa:", error);
+    }
+}
+
+async function deleteTask(taskId, columnId) {
+    try {
+        const confirmacao = confirm("Você tem certeza que deseja excluir esta tarefa?");
+        if (!confirmacao) return;
+
+        const response = await fetch(`${API_BASE_URL}/Task?TaskId=${taskId}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error("Erro ao excluir a tarefa");
+        }
+
+        // Remove o elemento da tarefa no DOM
+        const taskElement = document.getElementById(`task-${taskId}`);
+        if (taskElement) {
+            taskElement.remove();
+        }
+
+        console.log(`Tarefa com ID ${taskId} excluída com sucesso`);
+    } catch (error) {
+        console.error("Erro ao excluir a tarefa:", error);
+    }
+}
+
 
 async function createColumnFromBoard() {
     try {
